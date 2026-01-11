@@ -1,0 +1,195 @@
+<div id="top"></div>
+<app-topbar />
+
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-left">
+      <div class="pill glass">
+        <span class="status"></span>
+        Open to opportunities
+      </div>
+
+      <h1>
+        Hi, I'm <span class="grad">{{ name }}</span>
+      </h1>
+      <p class="lead muted">{{ role }} • {{ location }}</p>
+
+      <div class="cta-row">
+        <button mat-flat-button class="primary" (click)="scrollTo('projects')">
+          <mat-icon>rocket_launch</mat-icon>
+          View Projects
+        </button>
+        <button mat-stroked-button (click)="scrollTo('contact')">
+          <mat-icon>mail</mat-icon>
+          Contact
+        </button>
+      </div>
+
+      <div class="bullets">
+        @for (h of highlights; track h) {
+          <div class="bullet glass">
+            <mat-icon>check_circle</mat-icon>
+            <span>{{ h }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <mat-card class="glass card">
+        <mat-card-header>
+          <mat-card-title>Quick Profile</mat-card-title>
+          <mat-card-subtitle class="muted">What I bring</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div class="stat-grid">
+            <div class="stat glass">
+              <div class="num">3+</div>
+              <div class="muted">Years</div>
+            </div>
+            <div class="stat glass">
+              <div class="num">Angular</div>
+              <div class="muted">Frontend</div>
+            </div>
+            <div class="stat glass">
+              <div class="num">.NET</div>
+              <div class="muted">Backend</div>
+            </div>
+            <div class="stat glass">
+              <div class="num">SQL/Mongo</div>
+              <div class="muted">Data</div>
+            </div>
+          </div>
+
+          <mat-divider class="div"></mat-divider>
+
+          <p class="muted">
+            I build reliable, clean and scalable web apps with a strong focus on
+            performance, maintainability, and user experience.
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="about">
+  <div class="container">
+    <app-section-title
+      [title]="'About'"
+      [subtitle]="'A short intro that you can customize.'"
+    />
+    <div class="about-grid">
+      <div class="glass box">
+        <h3>Who I am</h3>
+        <p class="muted">
+          I’m {{ name }}, a full stack developer working mainly with Angular and .NET Core.
+          I enjoy building real-world products, solving tricky bugs, and shipping features end-to-end.
+        </p>
+      </div>
+      <div class="glass box">
+        <h3>What I do</h3>
+        <ul class="muted">
+          <li>Frontend: Angular, responsive UI, state + API integration</li>
+          <li>Backend: .NET Core APIs, validation, logging, integrations</li>
+          <li>DB: SQL Server + MongoDB, performance-focused queries</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="skills">
+  <div class="container">
+    <app-section-title [title]="'Skills'" [subtitle]="'Core strengths and tools.'" />
+    <div class="skills-grid">
+      @for (s of skills; track s.title) {
+        <div class="glass box">
+          <h3>{{ s.title }}</h3>
+          <div class="tag-grid">
+            @for (it of s.items; track it) {
+              <span class="tag">{{ it }}</span>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section" id="experience">
+  <div class="container">
+    <app-section-title [title]="'Experience'" [subtitle]="'Recent roles and contributions.'" />
+    <div class="timeline">
+      @for (e of experiences; track e.title) {
+        <div class="glass item">
+          <div class="row">
+            <div>
+              <h3>{{ e.title }}</h3>
+              <div class="muted">{{ e.org }}</div>
+            </div>
+            <div class="muted">{{ e.period }}</div>
+          </div>
+          <ul class="muted">
+            @for (p of e.points; track p) { <li>{{ p }}</li> }
+          </ul>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section" id="projects">
+  <div class="container">
+    <app-section-title [title]="'Projects'" [subtitle]="'A few things I’ve worked on.'" />
+    <div class="projects-grid">
+      @for (p of projects; track p.title) {
+        <app-project-card [project]="p" />
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <div class="container">
+    <app-section-title [title]="'Contact'" [subtitle]="'Let’s build something together.'" />
+
+    <div class="contact-grid">
+      <div class="glass box">
+        <h3>Message</h3>
+        <p class="muted">
+          Add your email, phone, and links below. You can also wire this to a backend later.
+        </p>
+
+        <div class="links">
+          <a class="link glass" href="mailto:youremail@example.com">
+            <mat-icon>mail</mat-icon>
+            youremail@example.com
+          </a>
+          <a class="link glass" href="tel:+91XXXXXXXXXX">
+            <mat-icon>call</mat-icon>
+            +91-XXXXXXXXXX
+          </a>
+          <a class="link glass" href="https://linkedin.com" target="_blank" rel="noreferrer">
+            <mat-icon>work</mat-icon>
+            LinkedIn
+          </a>
+          <a class="link glass" href="https://github.com" target="_blank" rel="noreferrer">
+            <mat-icon>code</mat-icon>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <div class="glass box">
+        <h3>Footer</h3>
+        <p class="muted">© {{ name }} • Built with Angular 20</p>
+        <button mat-stroked-button (click)="scrollTo('top')">
+          <mat-icon>north</mat-icon>
+          Back to top
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

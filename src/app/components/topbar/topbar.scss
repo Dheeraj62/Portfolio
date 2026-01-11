@@ -1,0 +1,31 @@
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(11, 16, 32, 0.72);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.row { display: flex; align-items: center; gap: 12px; }
+.spacer { flex: 1; }
+
+.brand {
+  display: flex; align-items: center; gap: 10px;
+  cursor: pointer; user-select: none;
+}
+.dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: linear-gradient(135deg, #7c3aed, #22c55e);
+  box-shadow: 0 0 16px rgba(124,58,237,0.4);
+}
+.name { font-weight: 700; letter-spacing: 0.2px; }
+
+.nav { display: none; gap: 4px; }
+.nav-btn { opacity: 0.9; }
+
+.cta { border-radius: 999px; }
+
+@media (min-width: 860px) {
+  .nav { display: flex; }
+}

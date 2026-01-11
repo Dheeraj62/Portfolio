@@ -1,0 +1,23 @@
+<mat-toolbar class="topbar">
+  <div class="container row">
+    <div class="brand" (click)="scrollTo('top')" role="button" tabindex="0">
+      <span class="dot"></span>
+      <span class="name">Dheeraj Verma</span>
+    </div>
+
+    <div class="spacer"></div>
+
+    <nav class="nav">
+      @for (item of nav; track item.id) {
+        <button mat-button class="nav-btn" (click)="scrollTo(item.id)">
+          {{ item.label }}
+        </button>
+      }
+    </nav>
+
+    <button mat-flat-button class="cta" (click)="downloadResume()">
+      <mat-icon>download</mat-icon>
+      Resume
+    </button>
+  </div>
+</mat-toolbar>

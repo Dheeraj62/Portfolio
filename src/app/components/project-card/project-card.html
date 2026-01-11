@@ -1,0 +1,27 @@
+<div class="card glass">
+  <div class="head">
+    <h3>{{ project().title }}</h3>
+    <p class="muted">{{ project().description }}</p>
+  </div>
+
+  <div class="chips">
+    @for (t of project().tags; track t) {
+      <mat-chip>{{ t }}</mat-chip>
+    }
+  </div>
+
+  <div class="actions">
+    @if (project().liveUrl) {
+      <a mat-stroked-button [href]="project().liveUrl" target="_blank" rel="noreferrer">
+        <mat-icon>open_in_new</mat-icon>
+        Live
+      </a>
+    }
+    @if (project().repoUrl) {
+      <a mat-button [href]="project().repoUrl" target="_blank" rel="noreferrer">
+        <mat-icon>code</mat-icon>
+        Code
+      </a>
+    }
+  </div>
+</div>
