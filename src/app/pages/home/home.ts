@@ -46,7 +46,7 @@ export class HomeComponent {
   experiences = [
     {
       title: 'Software Developer',
-      org: 'Your Company',
+      org: 'Binary Semantics Ltd',
       period: '2023 — Present',
       points: [
         'Built and maintained Angular dashboards and .NET Core APIs.',
