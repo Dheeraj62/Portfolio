@@ -1,115 +1,192 @@
 <div id="top"></div>
 <app-topbar />
 
-<section class="hero">
-  <div class="container hero-grid">
-    <div class="hero-left">
-      <div class="pill glass">
-        <span class="status"></span>
-        Open to opportunities
-      </div>
+<!-- HERO SECTION WITH 3D CANVAS -->
+<section class="hero-section">
+  <!-- Interactive 3D WebGL Canvas Layer -->
+  <app-three-canvas />
 
-      <h1>
-        Hi, I'm <span class="grad">{{ name }}</span>
-      </h1>
-      <p class="lead muted">{{ role }} • {{ location }}</p>
-
-      <div class="cta-row">
-        <button mat-flat-button class="primary" (click)="scrollTo('projects')">
-          <mat-icon>rocket_launch</mat-icon>
-          View Projects
-        </button>
-        <button mat-stroked-button (click)="scrollTo('contact')">
-          <mat-icon>mail</mat-icon>
-          Contact
-        </button>
-      </div>
-
-      <div class="bullets">
-        @for (h of highlights; track h) {
-          <div class="bullet glass">
-            <mat-icon>check_circle</mat-icon>
-            <span>{{ h }}</span>
+  <div class="container hero-content">
+    <div class="hero-grid">
+      <!-- Left Column: Bio & CTAs -->
+      <div class="hero-left">
+        <div class="hero-badge-group">
+          <div class="badge-pill badge-green">
+            <span class="pulse-dot"></span>
+            <span>{{ portfolioService.profile().currentRole }} • {{ portfolioService.profile().currentCompany }}</span>
           </div>
-        }
+          <div class="badge-pill">
+            <mat-icon class="badge-icon">auto_awesome</mat-icon>
+            <span>{{ portfolioService.profile().experienceYears }} Years Full-Stack Experience</span>
+          </div>
+        </div>
+
+        <h1 class="hero-title">
+          Hi, I'm <span class="grad-text">{{ portfolioService.profile().name }}</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          Software Engineer specializing in <span class="highlight">C# & ASP.NET Core</span>,
+          <span class="highlight">Angular & React</span>, event-driven microservices with <span class="highlight">Kafka & gRPC</span>,
+          and AI-accelerated delivery.
+        </p>
+
+        <div class="hero-cta-row">
+          <button type="button" class="btn-primary" (click)="scrollTo('projects')">
+            <mat-icon>rocket_launch</mat-icon>
+            <span>Explore Projects</span>
+          </button>
+
+          <button type="button" class="btn-secondary" (click)="scrollTo('experience')">
+            <mat-icon>work_outline</mat-icon>
+            <span>Experience</span>
+          </button>
+
+          <a [href]="portfolioService.urls.pitchConnectLive" target="_blank" rel="noreferrer" class="btn-ghost">
+            <mat-icon>public</mat-icon>
+            <span>PitchConnect SaaS</span>
+          </a>
+        </div>
+
+        <div class="hero-highlights">
+          @for (h of portfolioService.profile().highlights; track h) {
+            <div class="highlight-item glass">
+              <mat-icon class="check-icon">verified</mat-icon>
+              <span>{{ h }}</span>
+            </div>
+          }
+        </div>
       </div>
-    </div>
 
-    <div class="hero-right">
-      <mat-card class="glass card">
-        <mat-card-header>
-          <mat-card-title>Quick Profile</mat-card-title>
-          <mat-card-subtitle class="muted">What I bring</mat-card-subtitle>
-        </mat-card-header>
-
-        <mat-card-content>
-          <div class="stat-grid">
-            <div class="stat glass">
-              <div class="num">3+</div>
-              <div class="muted">Years</div>
+      <!-- Right Column: Interactive Quick Stats Card with 3D Tilt -->
+      <div class="hero-right">
+        <div class="profile-card glass-card" appTilt3D [maxTilt]="10" [scale]="1.02">
+          <div class="profile-header">
+            <div class="avatar-ring">
+              <span class="avatar-text">DV</span>
             </div>
-            <div class="stat glass">
-              <div class="num">Angular</div>
-              <div class="muted">Frontend</div>
-            </div>
-            <div class="stat glass">
-              <div class="num">.NET</div>
-              <div class="muted">Backend</div>
-            </div>
-            <div class="stat glass">
-              <div class="num">SQL/Mongo</div>
-              <div class="muted">Data</div>
+            <div>
+              <h2 class="profile-name">{{ portfolioService.profile().name }}</h2>
+              <p class="profile-role muted">{{ portfolioService.profile().role }}</p>
             </div>
           </div>
 
-          <mat-divider class="div"></mat-divider>
+          <div class="stats-grid">
+            @for (st of portfolioService.stats(); track st.label) {
+              <div class="stat-box glass">
+                <div class="stat-top">
+                  <span class="stat-num grad-text-cyan">{{ st.num }}</span>
+                  <mat-icon class="stat-icon">{{ st.icon }}</mat-icon>
+                </div>
+                <div class="stat-label">{{ st.label }}</div>
+                <div class="stat-sub muted">{{ st.sub }}</div>
+              </div>
+            }
+          </div>
 
-          <p class="muted">
-            I build reliable, clean and scalable web apps with a strong focus on
-            performance, maintainability, and user experience.
-          </p>
-        </mat-card-content>
-      </mat-card>
+          <div class="tech-ticker">
+            <div class="ticker-label mono">CORE ENTERPRISE STACK</div>
+            <div class="ticker-tags">
+              @for (tag of portfolioService.profile().coreStack; track tag) {
+                <span class="tag-pill">{{ tag }}</span>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
+<!-- ABOUT & PHILOSOPHY SECTION -->
 <section class="section" id="about">
   <div class="container">
     <app-section-title
-      [title]="'About'"
-      [subtitle]="'A short intro that you can customize.'"
+      tag="01 // OVERVIEW"
+      title="Engineering Philosophy & Impact"
+      subtitle="Crafting scalable architectures, high-performance APIs, and dynamic user interfaces with clean code and AI velocity."
     />
+
     <div class="about-grid">
-      <div class="glass box">
-        <h3>Who I am</h3>
+      <div class="glass-card about-card" appTilt3D [maxTilt]="6">
+        <div class="card-icon-box">
+          <mat-icon>architecture</mat-icon>
+        </div>
+        <h3>Enterprise Full-Stack Architecture</h3>
         <p class="muted">
-          I’m {{ name }}, a full stack developer working mainly with Angular and .NET Core.
-          I enjoy building real-world products, solving tricky bugs, and shipping features end-to-end.
+          Over {{ portfolioService.profile().experienceYears }} years, I have architected distributed microservices and enterprise web applications
+          serving hundreds of concurrent users and 20,000+ airline flight crew. My approach blends
+          Clean Architecture, SOLID design principles, and strict database query tuning across SQL Server & MongoDB.
         </p>
+        <div class="feature-badges">
+          <span>Clean Architecture</span>
+          <span>Repository Pattern</span>
+          <span>Dependency Injection</span>
+          <span>RBAC / JWT</span>
+        </div>
       </div>
-      <div class="glass box">
-        <h3>What I do</h3>
-        <ul class="muted">
-          <li>Frontend: Angular, responsive UI, state + API integration</li>
-          <li>Backend: .NET Core APIs, validation, logging, integrations</li>
-          <li>DB: SQL Server + MongoDB, performance-focused queries</li>
-        </ul>
+
+      <div class="glass-card about-card" appTilt3D [maxTilt]="6">
+        <div class="card-icon-box cyan">
+          <mat-icon>bolt</mat-icon>
+        </div>
+        <h3>Event-Driven & Inter-Service Speed</h3>
+        <p class="muted">
+          Expertise in decoupling systems using Apache Kafka for real-time event streaming and gRPC for
+          ultra-low latency inter-service RPC (achieving ~30% latency reduction over traditional REST).
+          Specialized in creating resilient integrations with third-party APIs using retry logic and circuit breaker patterns.
+        </p>
+        <div class="feature-badges">
+          <span>Apache Kafka</span>
+          <span>gRPC Services</span>
+          <span>GraphQL Queries</span>
+          <span>Circuit Breaker</span>
+        </div>
+      </div>
+
+      <div class="glass-card about-card" appTilt3D [maxTilt]="6">
+        <div class="card-icon-box purple">
+          <mat-icon>psychology</mat-icon>
+        </div>
+        <h3>AI-Assisted Engineering</h3>
+        <p class="muted">
+          Active practitioner of AI-assisted engineering with Claude, GitHub Copilot, ChatGPT, and Gemini.
+          Leveraging AI for rapid boilerplate generation, unit test scaffolding, SQL query optimization,
+          and code reviews—accelerating end-to-end feature delivery by ~25%.
+        </p>
+        <div class="feature-badges">
+          <span>Claude AI</span>
+          <span>GitHub Copilot</span>
+          <span>ChatGPT & Gemini</span>
+          <span>Prompt Engineering</span>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- SKILLS SECTION -->
 <section class="section" id="skills">
   <div class="container">
-    <app-section-title [title]="'Skills'" [subtitle]="'Core strengths and tools.'" />
+    <app-section-title
+      tag="02 // CAPABILITIES"
+      title="Technical Skillset"
+      subtitle="A categorized overview of languages, frameworks, messaging brokers, databases, cloud tools, and engineering practices."
+    />
+
     <div class="skills-grid">
-      @for (s of skills; track s.title) {
-        <div class="glass box">
-          <h3>{{ s.title }}</h3>
-          <div class="tag-grid">
+      @for (s of portfolioService.skills(); track s.title) {
+        <div class="skill-box glass-card" appTilt3D [maxTilt]="6">
+          <div class="skill-header">
+            <div class="skill-icon-wrap" [style.color]="s.color">
+              <mat-icon>{{ s.icon }}</mat-icon>
+            </div>
+            <h3 class="skill-title">{{ s.title }}</h3>
+          </div>
+
+          <div class="skill-tags">
             @for (it of s.items; track it) {
-              <span class="tag">{{ it }}</span>
+              <span class="skill-tag-pill">{{ it }}</span>
             }
           </div>
         </div>
@@ -118,76 +195,217 @@
   </div>
 </section>
 
+<!-- WORK EXPERIENCE SECTION -->
 <section class="section" id="experience">
   <div class="container">
-    <app-section-title [title]="'Experience'" [subtitle]="'Recent roles and contributions.'" />
-    <div class="timeline">
-      @for (e of experiences; track e.title) {
-        <div class="glass item">
-          <div class="row">
-            <div>
-              <h3>{{ e.title }}</h3>
-              <div class="muted">{{ e.org }}</div>
+    <app-section-title
+      tag="03 // CAREER JOURNEY"
+      title="Professional Experience"
+      subtitle="Proven track record in high-throughput aviation tech and enterprise compliance platforms."
+    />
+
+    <div class="experience-timeline">
+      @for (exp of portfolioService.experiences(); track exp.title + exp.org) {
+        <div class="exp-card glass-card" [class.current-company]="exp.isCurrent" appTilt3D [maxTilt]="4">
+          <div class="exp-header">
+            <div class="exp-main-info">
+              <div class="exp-title-row">
+                <h3 class="exp-title">{{ exp.title }}</h3>
+                <span class="exp-badge" [class.current]="exp.isCurrent">{{ exp.badge }}</span>
+              </div>
+              <div class="exp-org-row">
+                <span class="exp-org">{{ exp.org }}</span>
+                <span class="dot-separator">•</span>
+                <span class="exp-loc muted">{{ exp.location }}</span>
+              </div>
             </div>
-            <div class="muted">{{ e.period }}</div>
+
+            <div class="exp-period-wrap">
+              <span class="exp-period mono">{{ exp.period }}</span>
+              <span class="exp-type">{{ exp.type }}</span>
+            </div>
           </div>
-          <ul class="muted">
-            @for (p of e.points; track p) { <li>{{ p }}</li> }
+
+          <p class="exp-summary">{{ exp.summary }}</p>
+
+          <div class="exp-divider"></div>
+
+          <ul class="exp-points">
+            @for (pt of exp.points; track pt) {
+              <li>
+                <mat-icon class="exp-check">chevron_right</mat-icon>
+                <span>{{ pt }}</span>
+              </li>
+            }
           </ul>
+
+          <div class="exp-tech-row">
+            <span class="tech-label mono">TECH STACK:</span>
+            <div class="tech-tags">
+              @for (t of exp.tech; track t) {
+                <span class="tech-tag">{{ t }}</span>
+              }
+            </div>
+          </div>
         </div>
       }
     </div>
   </div>
 </section>
 
+<!-- PROJECTS SECTION -->
 <section class="section" id="projects">
   <div class="container">
-    <app-section-title [title]="'Projects'" [subtitle]="'A few things I’ve worked on.'" />
+    <div class="projects-header-row">
+      <app-section-title
+        tag="04 // FEATURED WORK"
+        title="Featured Projects & SaaS"
+        subtitle="Aviation crew microservices at IndiGo Airlines, live founder-investor SaaS, and enterprise financial platforms."
+      />
+
+      <!-- Filter Tabs -->
+      <div class="filter-tabs">
+        @for (tab of filterTabs; track tab.value) {
+          <button
+            type="button"
+            class="filter-tab"
+            [class.active]="portfolioService.activeProjectFilter() === tab.value"
+            (click)="setFilter(tab.value)"
+          >
+            {{ tab.label }}
+          </button>
+        }
+      </div>
+    </div>
+
     <div class="projects-grid">
-      @for (p of projects; track p.title) {
+      @for (p of portfolioService.filteredProjects(); track p.id) {
         <app-project-card [project]="p" />
       }
     </div>
   </div>
 </section>
 
-<section class="section" id="contact">
+<!-- EDUCATION & ACADEMICS SECTION -->
+<section class="section" id="education">
   <div class="container">
-    <app-section-title [title]="'Contact'" [subtitle]="'Let’s build something together.'" />
+    <app-section-title
+      tag="05 // ACADEMICS"
+      title="Education & Qualifications"
+      subtitle="Academic foundation in Computer Science & Engineering with distinction."
+    />
+
+    <div class="education-grid">
+      @for (edu of portfolioService.education(); track edu.degree) {
+        <div class="edu-card glass-card" appTilt3D [maxTilt]="6">
+          <div class="edu-icon-wrap">
+            <mat-icon>{{ edu.icon }}</mat-icon>
+          </div>
+          <div class="edu-content">
+            <div class="edu-meta-row">
+              <span class="edu-score-pill">{{ edu.score }}</span>
+              <span class="edu-highlight">{{ edu.highlight }}</span>
+            </div>
+            <h3 class="edu-degree">{{ edu.degree }}</h3>
+            <p class="edu-institution muted">{{ edu.institution }}</p>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT & FOOTER SECTION -->
+<section class="section contact-section" id="contact">
+  <div class="container">
+    <app-section-title
+      tag="06 // CONNECT"
+      title="Get In Touch"
+      subtitle="Interested in full-stack engineering, high-throughput microservices, or building scalable systems together? Let's connect!"
+    />
 
     <div class="contact-grid">
-      <div class="glass box">
-        <h3>Message</h3>
-        <p class="muted">
-          Add your email, phone, and links below. You can also wire this to a backend later.
-        </p>
+      <!-- Contact Cards Group -->
+      <div class="contact-cards-group">
+        <!-- Email Click-to-Copy -->
+        <div
+          class="contact-card glass-card"
+          (click)="copyToClipboard(portfolioService.urls.email, 'Email')"
+          role="button"
+          tabindex="0"
+        >
+          <div class="contact-icon email">
+            <mat-icon>email</mat-icon>
+          </div>
+          <div class="contact-details">
+            <span class="contact-type">Email Address (Click to Copy)</span>
+            <span class="contact-value">{{ portfolioService.urls.email }}</span>
+          </div>
+          <button type="button" class="copy-btn" title="Copy Email">
+            <mat-icon>{{ portfolioService.copiedItem() === 'Email' ? 'check' : 'content_copy' }}</mat-icon>
+          </button>
+        </div>
 
-        <div class="links">
-          <a class="link glass" href="mailto:youremail@example.com">
-            <mat-icon>mail</mat-icon>
-            youremail@example.com
-          </a>
-          <a class="link glass" href="tel:+91XXXXXXXXXX">
-            <mat-icon>call</mat-icon>
-            +91-XXXXXXXXXX
-          </a>
-          <a class="link glass" href="https://linkedin.com" target="_blank" rel="noreferrer">
-            <mat-icon>work</mat-icon>
-            LinkedIn
-          </a>
-          <a class="link glass" href="https://github.com" target="_blank" rel="noreferrer">
-            <mat-icon>code</mat-icon>
-            GitHub
-          </a>
+        <!-- Social Links Buttons -->
+        <div class="contact-card social-connect-card glass-card">
+          <div class="contact-details">
+            <span class="contact-type">Direct Profiles</span>
+            <span class="contact-value">Connect via Social Channels</span>
+          </div>
+          <app-social-links />
         </div>
       </div>
 
-      <div class="glass box">
-        <h3>Footer</h3>
-        <p class="muted">© {{ name }} • Built with Angular 20</p>
-        <button mat-stroked-button (click)="scrollTo('top')">
-          <mat-icon>north</mat-icon>
-          Back to top
+      <!-- Quick Message / Action Card -->
+      <div class="glass-card contact-cta-card" appTilt3D [maxTilt]="6">
+        <div class="cta-card-header">
+          <div class="pulse-dot"></div>
+          <span class="mono">OPEN FOR HIGH-IMPACT OPPORTUNITIES</span>
+        </div>
+
+        <h3 class="cta-card-title">Let's build scalable systems together</h3>
+        <p class="muted">
+          Looking for a Full-Stack Software Engineer with proven experience in C#, .NET 9, Angular 20,
+          React, microservices, and high-performance databases?
+        </p>
+
+        <div class="cta-card-actions">
+          <a [href]="portfolioService.urls.mailto" class="btn-email">
+            <mat-icon>mail</mat-icon>
+            <span>Send Direct Email</span>
+          </a>
+
+          <a [href]="portfolioService.urls.pitchConnectLive" target="_blank" rel="noreferrer" class="btn-pitch">
+            <mat-icon>rocket_launch</mat-icon>
+            <span>Try PitchConnect</span>
+          </a>
+        </div>
+
+        @if (portfolioService.copiedItem()) {
+          <div class="copy-alert">
+            <mat-icon>check_circle</mat-icon>
+            <span>{{ portfolioService.copiedItem() }} copied to clipboard!</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-wrap">
+      <div class="footer-left">
+        <div class="footer-brand">
+          <span class="footer-avatar">DV</span>
+          <span class="footer-name">{{ portfolioService.profile().name }}</span>
+        </div>
+        <p class="footer-tagline muted">
+          Software Engineer • {{ portfolioService.profile().experienceYears }} Years Experience • .NET Core, Angular, React & Microservices
+        </p>
+      </div>
+
+      <div class="footer-right">
+        <button type="button" class="btn-back-to-top" (click)="scrollTo('top')">
+          <span>Back to Top</span>
+          <mat-icon>arrow_upward</mat-icon>
         </button>
       </div>
     </div>

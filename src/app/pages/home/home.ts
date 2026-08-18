@@ -1,89 +1,59 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatChipsModule } from '@angular/material/chips';
 
 import { TopbarComponent } from '../../components/topbar/topbar';
 import { SectionTitle } from '../../components/section-title/section-title';
-import { Project, ProjectCard } from '../../components/project-card/project-card';
+import { ProjectCard } from '../../components/project-card/project-card';
+import { ThreeCanvasComponent } from '../../components/three-canvas/three-canvas';
+import { SocialLinksComponent } from '../../components/social-links/social-links';
+import { Tilt3DDirective } from '../../directives/tilt-3d.directive';
+import { PortfolioService } from '../../core/services/portfolio.service';
+import { ProjectFilterOption } from '../../core/models/portfolio.model';
 
 @Component({
   selector: 'app-home',
-   imports: [
+  standalone: true,
+  imports: [
     CommonModule,
     TopbarComponent,
     SectionTitle,
     ProjectCard,
+    ThreeCanvasComponent,
+    SocialLinksComponent,
+    Tilt3DDirective,
     MatButtonModule,
     MatIconModule,
     MatCardModule,
     MatDividerModule,
+    MatChipsModule,
   ],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
 export class HomeComponent {
-  name = 'Dheeraj Verma';
-  role = '.NET Core | Angular | Full Stack Developer';
-  location = 'India';
+  readonly portfolioService = inject(PortfolioService);
 
-  highlights = [
-    '3+ years building web apps and APIs',
-    'Angular + .NET Core enterprise projects',
-    'MongoDB, SQL Server, REST, Auth, CI/CD basics',
+  readonly filterTabs: readonly { label: string; value: ProjectFilterOption }[] = [
+    { label: 'All Projects', value: 'all' },
+    { label: 'SaaS & Live', value: 'saas' },
+    { label: 'Enterprise & Airlines', value: 'enterprise' },
+    { label: 'FinTech & Compliance', value: 'fintech' },
   ];
 
-  skills = [
-    { title: 'Frontend', items: ['Angular 18/20', 'TypeScript', 'RxJS', 'Angular Material', 'HTML/SCSS'] },
-    { title: 'Backend', items: ['.NET Core', 'Web APIs', 'Entity Framework Core', 'JWT/Auth', 'Background Jobs'] },
-    { title: 'Databases', items: ['SQL Server', 'MongoDB', 'Indexes', 'Query optimization (basic)'] },
-    { title: 'Tools', items: ['Git', 'Postman', 'Azure basics', 'CI/CD basics'] },
-  ];
+  setFilter(filter: ProjectFilterOption): void {
+    this.portfolioService.setProjectFilter(filter);
+  }
 
-  experiences = [
-    {
-      title: 'Software Developer',
-      org: 'Binary Semantics Ltd',
-      period: '2023 — Present',
-      points: [
-        'Built and maintained Angular dashboards and .NET Core APIs.',
-        'Implemented validations, logging, and scalable data fetching patterns.',
-        'Worked on GST/invoice workflows with MongoDB & SQL Server.',
-      ],
-    },
-    {
-      title: 'Developer / Recruiter (Earlier)',
-      org: 'Previous',
-      period: '2021 — 2023',
-      points: [
-        'Worked on web modules, bug fixes, and feature delivery.',
-        'Collaborated with cross-functional teams and stakeholders.',
-      ],
-    },
-  ];
+  copyToClipboard(text: string, label: string): void {
+    this.portfolioService.copyToClipboard(text, label);
+  }
 
-  projects: Project[] = [
-    {
-      title: 'GST / Invoice Automation',
-      description: 'Invoice workflows, validation pipelines, and upload status tracking with MongoDB and .NET Core.',
-      tags: ['.NET Core', 'MongoDB', 'Angular', 'GST'],
-    },
-    {
-      title: 'Seating Chart Editor',
-      description: 'Interactive seat selection + section overlays + tooltips for admin editing.',
-      tags: ['JavaScript', 'SVG/Canvas', 'APIs'],
-    },
-    {
-      title: 'Portfolio (Angular 20)',
-      description: 'Modern responsive portfolio with Angular Material and clean UI.',
-      tags: ['Angular 20', 'Material', 'SCSS'],
-    },
-  ];
-
-  scrollTo(id: string) {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  scrollTo(id: string): void {
+    this.portfolioService.scrollToSection(id);
   }
 }

@@ -1,29 +1,42 @@
-import { Component } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { PortfolioService } from '../../core/services/portfolio.service';
+import { SocialLinksComponent } from '../social-links/social-links';
+
+interface NavItem {
+  readonly label: string;
+  readonly id: string;
+}
 
 @Component({
   selector: 'app-topbar',
-  imports: [MatToolbarModule, MatButtonModule, MatIconModule],
+  standalone: true,
+  imports: [CommonModule, MatToolbarModule, MatButtonModule, MatIconModule, SocialLinksComponent],
   templateUrl: './topbar.html',
   styleUrl: './topbar.scss',
 })
 export class TopbarComponent {
-  nav = [
+  readonly portfolioService = inject(PortfolioService);
+  isScrolled = false;
+
+  readonly navItems: readonly NavItem[] = [
     { label: 'About', id: 'about' },
     { label: 'Skills', id: 'skills' },
     { label: 'Experience', id: 'experience' },
     { label: 'Projects', id: 'projects' },
+    { label: 'Education', id: 'education' },
     { label: 'Contact', id: 'contact' },
   ];
 
-  scrollTo(id: string) {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  @HostListener('window:scroll', [])
+  onWindowScroll(): void {
+    this.isScrolled = window.scrollY > 40;
   }
 
-  downloadResume() {
-    // Put your resume PDF inside: src/assets/resume.pdf
-    window.open('assets/resume.pdf', '_blank');
+  scrollTo(id: string): void {
+    this.portfolioService.scrollToSection(id);
   }
 }

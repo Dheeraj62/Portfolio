@@ -1,26 +1,76 @@
-<div class="card glass">
-  <div class="head">
-    <h3>{{ project().title }}</h3>
-    <p class="muted">{{ project().description }}</p>
+<div class="card glass-card" [class.featured]="project().featured" [class.current-job]="project().isCurrentJobProject" appTilt3D [maxTilt]="8" [scale]="1.015">
+  <div class="card-glow-bg"></div>
+
+  <div class="card-header">
+    <div class="meta-row">
+      <span class="category-badge mono">{{ project().category }}</span>
+      
+      @if (project().isCurrentJobProject) {
+        <span class="job-badge">
+          <mat-icon>business</mat-icon> Current Job Project
+        </span>
+      } @else if (project().organization) {
+        <span class="org-badge">
+          <mat-icon>apartment</mat-icon> {{ project().organization }}
+        </span>
+      } @else if (project().featured) {
+        <span class="featured-badge">
+          <mat-icon>star</mat-icon> Featured SaaS
+        </span>
+      }
+    </div>
+
+    <h3 class="card-title">{{ project().title }}</h3>
   </div>
 
-  <div class="chips">
+  <p class="description">{{ project().description }}</p>
+
+  @if (project().highlights && project().highlights!.length > 0) {
+    <ul class="highlights-list">
+      @for (point of project().highlights; track point) {
+        <li>
+          <mat-icon class="check-icon">check</mat-icon>
+          <span>{{ point }}</span>
+        </li>
+      }
+    </ul>
+  }
+
+  @if (project().metrics) {
+    <div class="metrics-badge">
+      <mat-icon>insights</mat-icon>
+      <span>{{ project().metrics }}</span>
+    </div>
+  }
+
+  <div class="chips-wrap">
     @for (t of project().tags; track t) {
-      <mat-chip>{{ t }}</mat-chip>
+      <span class="tech-chip">{{ t }}</span>
     }
   </div>
 
-  <div class="actions">
+  <div class="card-actions">
     @if (project().liveUrl) {
-      <a mat-stroked-button [href]="project().liveUrl" target="_blank" rel="noreferrer">
-        <mat-icon>open_in_new</mat-icon>
-        Live
+      <a class="btn-live" [href]="project().liveUrl" target="_blank" rel="noreferrer">
+        <span>Visit Live Platform</span>
+        <mat-icon>launch</mat-icon>
       </a>
+    } @else if (project().isCurrentJobProject) {
+      <div class="enterprise-indicator">
+        <span class="pulse-dot-sm"></span>
+        <span>Production Airline Platform</span>
+      </div>
+    } @else {
+      <div class="enterprise-indicator">
+        <mat-icon class="icon-sm">verified_user</mat-icon>
+        <span>Enterprise Production System</span>
+      </div>
     }
+
     @if (project().repoUrl) {
-      <a mat-button [href]="project().repoUrl" target="_blank" rel="noreferrer">
+      <a class="btn-code" [href]="project().repoUrl" target="_blank" rel="noreferrer">
         <mat-icon>code</mat-icon>
-        Code
+        <span>Source</span>
       </a>
     }
   </div>

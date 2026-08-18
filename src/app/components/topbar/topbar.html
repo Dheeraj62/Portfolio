@@ -1,23 +1,31 @@
-<mat-toolbar class="topbar">
-  <div class="container row">
+<header class="topbar-wrapper" [class.scrolled]="isScrolled">
+  <div class="container topbar-inner">
     <div class="brand" (click)="scrollTo('top')" role="button" tabindex="0">
-      <span class="dot"></span>
-      <span class="name">Dheeraj Verma</span>
+      <div class="brand-avatar">
+        <span class="avatar-letter">DV</span>
+      </div>
+      <div class="brand-text">
+        <span class="name">{{ portfolioService.profile().name }}</span>
+        <span class="tagline">{{ portfolioService.profile().experienceYears }} Yrs • Full Stack</span>
+      </div>
     </div>
 
-    <div class="spacer"></div>
-
-    <nav class="nav">
-      @for (item of nav; track item.id) {
-        <button mat-button class="nav-btn" (click)="scrollTo(item.id)">
+    <nav class="nav-links">
+      @for (item of navItems; track item.id) {
+        <button type="button" class="nav-link" (click)="scrollTo(item.id)">
           {{ item.label }}
         </button>
       }
     </nav>
 
-    <button mat-flat-button class="cta" (click)="downloadResume()">
-      <mat-icon>download</mat-icon>
-      Resume
-    </button>
+    <div class="topbar-actions">
+      <!-- Reusable Social Links Component -->
+      <app-social-links [compact]="true" />
+
+      <button type="button" class="btn-talk" (click)="scrollTo('contact')">
+        <span>Let's Talk</span>
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
   </div>
-</mat-toolbar>
+</header>
