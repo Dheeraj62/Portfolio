@@ -1,15 +1,10 @@
 {
-  "version": 2,
-  "builds": [
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist/dheeraj-portfolio/browser",
+  "rewrites": [
     {
-      "src": "dist/dheeraj-portfolio/browser/**",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/dist/dheeraj-portfolio/browser/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
